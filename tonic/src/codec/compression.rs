@@ -160,9 +160,8 @@ impl CompressionEncoding {
     }
 
     #[allow(missing_docs)]
-    #[cfg(any(feature = "gzip", feature = "zstd"))]
-    pub(crate) fn as_str(&self) -> &'static str {
-        match self {
+    pub(crate) const fn as_str(&self) -> &'static str {
+        match *self {
             #[cfg(feature = "gzip")]
             CompressionEncoding::Gzip => "gzip",
             #[cfg(feature = "zstd")]
@@ -171,11 +170,11 @@ impl CompressionEncoding {
     }
 
     #[cfg(any(feature = "gzip", feature = "zstd"))]
-    pub(crate) fn into_header_value(self) -> http::HeaderValue {
+    pub(crate) const fn into_header_value(self) -> http::HeaderValue {
         http::HeaderValue::from_static(self.as_str())
     }
 
-    pub(crate) fn encodings() -> &'static [Self] {
+    pub(crate) const fn encodings() -> &'static [Self] {
         &[
             #[cfg(feature = "gzip")]
             CompressionEncoding::Gzip,
